@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { Providers } from "./providers";
 import { auth } from "@/app/auth";
 import { fontSans } from "@/config/fonts";
-// import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/navbar";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -59,6 +59,7 @@ export default async function RootLayout({
               primaryLinks={primarySports}
               secondaryLinks={secondarySports}
             /> */}
+            <Navbar/>
             <div className="relative flex flex-col">
               <main className="container mx-auto max-w-7xl px-3 py-10 md:py-10 md:px-10 flex-grow">
                 {children}
