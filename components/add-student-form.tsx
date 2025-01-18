@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import { redirect } from 'next/navigation';
 
 export default function AddStudentForm () {
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget));
