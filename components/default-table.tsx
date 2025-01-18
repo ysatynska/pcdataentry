@@ -1,7 +1,7 @@
 'use client'
 import React from "react";
 import { usePathname } from 'next/navigation';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner, getKeyValue } from "@heroui/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner } from "@heroui/react";
 import {useAsyncList} from "@react-stately/data";
 import { useState, useMemo } from 'react';
 
@@ -10,13 +10,13 @@ type Column = {
   label: string,
 }
 
-// function getKeyValue (item: any, columnKey: any, page: any, rowsPerPage: any, index: any) {
-//   if (columnKey == "rowNumber") {
-//     return index + 1;
-//   } else {
-//     return item[columnKey];
-//   }
-// }
+function getKeyValue (item: any, columnKey: any) {
+  if (item[columnKey]) {
+    return item[columnKey];
+  } else {
+    return "-";
+  }
+}
 
 export default function DefaultTable({ items, columns }: { items: any[], columns: Column[] }) {
   const [page, setPage] = useState(1);
