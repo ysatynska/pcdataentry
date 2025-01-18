@@ -1,14 +1,15 @@
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue } from "@heroui/react";
-import DefaultTable from "@/components/table";
+import DefaultTable from "@/components/default-table";
 import React from "react";
-import { fetchSections } from "@/app/lib/queries";
+import { fetchStudents } from "@/app/lib/queries";
+import { columnsStudent } from "@/app/lib/definitions";
 
 
 export default async function Home() {
-  const sections = await fetchSections();
-  console.log("sections: ", sections);
-
+  const sections = await fetchStudents();
+  
+  console.log(sections);
   return (
-    <><DefaultTable items={sections}/></>
+    <><DefaultTable items={sections} columns={columnsStudent}/></>
   );
 }

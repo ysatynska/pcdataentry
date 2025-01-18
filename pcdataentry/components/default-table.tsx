@@ -2,7 +2,11 @@
 import React from "react";
 import { usePathname } from 'next/navigation';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from "@heroui/react";
-import { TableItem } from "@/app/lib/definitions";
+
+type Column = {
+  key: string,
+  label: string,
+}
 
 function getKeyValue (item: any, columnKey: any, page: any, rowsPerPage: any, index: any) {
   if (columnKey == "rowNumber") {
@@ -12,7 +16,7 @@ function getKeyValue (item: any, columnKey: any, page: any, rowsPerPage: any, in
   }
 }
 
-export default function DefaultTable({ items }: { items: TableItem[] }) {
+export default function DefaultTable({ items, columns }: { items: any, columns: Column[] }) {
   const pathname = usePathname();
   const [page, setPage] = React.useState(1);
   const rowsPerPage = pathname === '/' ? 5 : 13;
@@ -48,13 +52,11 @@ export default function DefaultTable({ items }: { items: TableItem[] }) {
           wrapper: "min-h-[222px]",
         }}
       >
-        <TableHeader>
-          <TableColumn key="rowNumber">Row Number</TableColumn>
-          <TableColumn key="name">Name</TableColumn>
-          <TableColumn key="description">Description</TableColumn>
+        <TableHeader columns={columns}>
+          {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
         </TableHeader>
         <TableBody items={rowItems}>
-          {(rowItem) => {
+          {(rowItem: any) => {
             const index = items.indexOf(rowItem);
             return (
               <TableRow key={rowItem.player_id}>
