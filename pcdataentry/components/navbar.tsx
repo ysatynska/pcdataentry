@@ -16,6 +16,7 @@ import React from "react";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { siteConfig } from "@/config/site";
 
 const menuItems = [
     "Profile",
@@ -41,7 +42,7 @@ export const NextUINavbar = () => {
         isBordered
         shouldHideOnScroll
         onMenuOpenChange={setIsMenuOpen}
-        className="border-b-2 border-b-red-700 flex"
+        className="border-b-2 border-b-primary flex"
       >
       <NavbarBrand className="!basis-16 !flex-shrink-0">
           <Link
@@ -69,26 +70,18 @@ export const NextUINavbar = () => {
             />
         
             <ul className="hidden sm:flex flex-shrink gap-10 justify-start">
-                <NavbarItem key="home">
-                    <Link 
-                        className={clsx(
-                            "text-foreground text-xl",
-                            pathname === `/` ? "text-red-900 font-medium" : ""
-                        )}
-                        href={`/`}>
-                            Home
-                    </Link>
-                </NavbarItem>
-                <NavbarItem key="data">
-                    <Link 
-                        className={clsx(
-                            "text-foreground text-xl",
-                            pathname === `/data` ? "text-red-900 font-medium" : ""
-                        )}
-                        href={`/data`}>
-                            Data
-                    </Link>
-                </NavbarItem>
+              {siteConfig.navItems.map((item: {label: string, href: string, key: string}) => (
+                <NavbarItem key={item.key}>
+                  <Link 
+                      className={clsx(
+                          "text-foreground text-xl",
+                          pathname === item.href ? "text-primary font-medium" : ""
+                      )}
+                      href={item.href}>
+                          {item.label}
+                  </Link>
+              </NavbarItem>
+              ))}
             </ul>
         </NavbarContent>
 
@@ -99,10 +92,11 @@ export const NextUINavbar = () => {
             {session.user.name}!
           </NavbarItem>
         ) : ( */}
-          <NavbarItem>
-            <Link href="/signin" size="lg">
+          <NavbarItem className="text-sm text-center">
+          Welcome, <br/> Brian Schwenk!
+            {/* <Link href="/signin" size="lg">
               Login
-            </Link>
+            </Link> */}
           </NavbarItem>
         {/* )} */}
         {/* <ThemeSwitcher /> */}

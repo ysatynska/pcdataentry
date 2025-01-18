@@ -1,10 +1,10 @@
 'use server';
  
 import { signIn } from '@/app/lib/auth';
-import { AuthError } from 'next-auth';
-import { z } from "zod";
-import { redirect } from 'next/navigation';
-import bcrypt from 'bcrypt';
+// import { AuthError } from 'next-auth';
+// import { z } from "zod";
+// import { redirect } from 'next/navigation';
+// import bcrypt from 'bcrypt';
 import { sql } from '@vercel/postgres';
  
 export async function authenticate(

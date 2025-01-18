@@ -34,3 +34,18 @@ export type Course = {
     teacher: string;
     location: string;
 };
+
+export type DropdownItem = {
+    label: string;
+    href: string;
+    key: string;
+}
+
+export type NavItem = {
+    key: string;
+    label: string;
+    href: string;
+    dropdownItems: DropdownItem[];
+}
+
+export type TableItem = any

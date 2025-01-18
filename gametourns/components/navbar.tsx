@@ -124,7 +124,7 @@ export const Navbar = () => {
             </NavbarItem> */}
 
           {/* Catch-all Dropdown for other sports */}
-          {/* <NavbarItem key={`othersports`}>
+          <NavbarItem key={`othersports`}>
             <Dropdown backdrop="blur">
               <DropdownTrigger>
                 <Button
@@ -178,7 +178,7 @@ export const Navbar = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-          </NavbarItem> */}
+          </NavbarItem>
 
           <NavbarItem key={`create_sport`}>
             <Button
