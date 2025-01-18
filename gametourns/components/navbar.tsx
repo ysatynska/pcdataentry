@@ -198,7 +198,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       {/* End Content to display on the navbar */}
-      {/* <NavbarContent className="flex" justify="end">
+      <NavbarContent className="flex" justify="end">
         {session ? (
           <NavbarItem className="text-sm text-center">
             Welcome, <br />
@@ -212,7 +212,7 @@ export const Navbar = () => {
           </NavbarItem>
         )}
         <ThemeSwitch />
-      </NavbarContent> */}
+      </NavbarContent>
 
       {/* UI for the NavbarMenu to display when Menu is expanded on small screens */}
       <NavbarMenu className="flex flex-col md:hidden">
