@@ -8,7 +8,6 @@ import { columnsStudent } from "@/app/lib/definitions";
 export default async function Home() {
   const sections = await fetchStudents();
   
-  console.log(sections);
   return (
     <><DefaultTable items={sections} columns={columnsStudent}/></>
   );
