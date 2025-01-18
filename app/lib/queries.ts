@@ -26,7 +26,11 @@ export async function fetchStudents() {
         ORDER BY name desc;
       `;
       return students;
-    } catch (error) {
+    } catch (error: any) {
+      if (error.code === '42P01') { // PostgreSQL code for "relation does not exist"
+        console.error('Table "students" does not exist.');
+        return [];
+      }
       console.error('Error fetching students:', error);
       throw new Error('Failed to fetch students.');
     }
