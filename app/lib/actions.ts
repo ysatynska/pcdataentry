@@ -1,16 +1,16 @@
 'use server';
  
-import { signIn } from '@/app/lib/auth';
+// import { signIn } from '@/app/lib/auth';
 // import { AuthError } from 'next-auth';
 // import { z } from "zod";
 // import { redirect } from 'next/navigation';
 // import bcrypt from 'bcrypt';
-import { sql } from '@vercel/postgres';
+// import { sql } from '@vercel/postgres';
  
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData,
-) {
+// export async function authenticate(
+//   prevState: string | undefined,
+//   formData: FormData,
+// ) {
   // try {
   //   await signIn('credentials', formData);
   // } catch (error) {
@@ -24,17 +24,17 @@ export async function authenticate(
   //   }
   //   throw error;
   // }
-}
+// }
 
-export type State = {
+// export type State = {
   // errors?: {
   //   name?: string[];
   //   email?: string[];
   //   password?: string[];
   // };
-};
+// };
 
-const schemaRegister = z.object({
+// const schemaRegister = z.object({
   // name: z
   //   .string()
   //   .min(3)
@@ -50,9 +50,9 @@ const schemaRegister = z.object({
   // email: z.string().email({
   //   message: "Please enter a valid email address.",
   // }),
-});
+// });
 
-export async function registerUserAction(prevState: State, formData: FormData) {
+// export async function registerUserAction(prevState: State, formData: FormData) {
   // const validatedFields = schemaRegister.safeParse({
   //   name: formData.get("name"),
   //   password: formData.get("password"),
@@ -83,4 +83,4 @@ export async function registerUserAction(prevState: State, formData: FormData) {
   // }
 
   // redirect('/signin');
-}
+// }
