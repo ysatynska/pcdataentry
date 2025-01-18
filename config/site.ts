@@ -29,6 +29,11 @@ export const siteConfig = {
         // { label: "Ping Pong Home", href: "/pingpong", key: "pool"},
       ],
     },
+    {
+      label: "Add Student",
+      href: "/add_student",
+      key: "add_student",
+    },
   ],
   links: {
     // github: "https://github.com/nextui-org/nextui",
