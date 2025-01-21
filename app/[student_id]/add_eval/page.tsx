@@ -1,4 +1,4 @@
-import { fetchStudent, fetchEvaluationsWithSections, fetchAllSections } from "@/app/lib/queries";
+import { fetchStudent, fetchAllSections } from "@/app/lib/queries";
 import AddEvalutionForm from "@/components/add-evaluation-form";
 
 export default async function AddStudentEval({params}: any) {
