@@ -16,5 +16,6 @@ module.exports = {
         bg: '#F0F8FF',
       },
     },
-  }
+  },
+  plugins: [heroui()],
 };
