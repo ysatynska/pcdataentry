@@ -1,8 +1,7 @@
 'use client'
 import React from "react";
 import { usePathname } from 'next/navigation';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner } from "@heroui/react";
-import {useAsyncList} from "@react-stately/data";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Spinner, Link } from "@heroui/react";
 import { useState, useMemo } from 'react';
 
 type Column = {
@@ -12,7 +11,15 @@ type Column = {
 
 function getKeyValue (item: any, columnKey: any) {
   if (item[columnKey]) {
-    return item[columnKey];
+    if (columnKey == "name") {
+      return (
+        <Link href={`/${item.id}/overview`} className="text-primary underline">
+          {item[columnKey]}
+        </Link>
+      );
+    } else {
+      return item[columnKey];
+    }
   } else {
     return "-";
   }
@@ -26,7 +33,7 @@ export default function DefaultTable({ items, columns }: { items: any[], columns
   });
 
   const pathname = usePathname();
-  const rowsPerPage = pathname === '/' ? 5 : 13;
+  const rowsPerPage = 16;
 
   const pages = Math.ceil(items.length / rowsPerPage);
 
@@ -87,7 +94,7 @@ export default function DefaultTable({ items, columns }: { items: any[], columns
               isCompact
               showControls
               showShadow
-              color="default"
+              color="primary"
               page={page}
               total={pages}
               onChange={(page) => setPage(page)}
@@ -95,8 +102,9 @@ export default function DefaultTable({ items, columns }: { items: any[], columns
           </div>
         }
         classNames={{
-          wrapper: "min-h-[222px]",
+          wrapper: "min-h-[222px] outline outline-primary",
         }}
+        onRowAction={() => console.log("on row action")}
       >
         <TableHeader columns={columns}>
           {(column) => (

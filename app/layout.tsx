@@ -42,15 +42,13 @@ export default function RootLayout({
       className={`${fontSans.variable} light`}
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bg h-screen`}
       >
         <Providers>
         <NextUINavbar/>
-          <div className="relative flex flex-col">
-            <main className="container mx-auto max-w-7xl px-3 py-10 md:py-10 md:px-10 flex-grow">
-              {children}
-            </main>
-          </div>
+          <main className="container mx-auto max-w-7xl px-3 py-10 md:py-10 md:px-10 flex-grow items-center justify-center relative flex flex-col">
+            {children}
+          </main>
         </Providers>
       </body>
     </html>

@@ -21,14 +21,14 @@ export const siteConfig = {
       href: "/student_lookup",
       key: "student_lookup",
     },
-    {
-      label: "Settings",
-      href: "/settings",
-      key: "settings",
-      dropdownItems: [
-        // { label: "Ping Pong Home", href: "/pingpong", key: "pool"},
-      ],
-    },
+    // {
+    //   label: "Settings",
+    //   href: "/settings",
+    //   key: "settings",
+    //   dropdownItems: [
+    //     // { label: "Ping Pong Home", href: "/pingpong", key: "pool"},
+    //   ],
+    // },
     {
       label: "Add Student",
       href: "/add_student",

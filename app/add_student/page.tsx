@@ -1,11 +1,11 @@
+'use client'
 import AddStudentForm from "@/components/add-student-form";
+import {Card, CardBody} from "@heroui/react";
 
 export default function AddStudentPage() {
   return (
-    <main className="flex items-center justify-center h-[calc(100vh-10rem)]">
-      <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4">
-        <AddStudentForm />
-      </div>
-    </main>
+    <div className="relative mx-auto flex w-full max-w-[400px] flex-col shadow-2xl rounded-lg outline outline-primary p-8 items-center bg-white">
+      <AddStudentForm />
+    </div>
   );
 }

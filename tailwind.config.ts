@@ -13,10 +13,10 @@ module.exports = {
       colors: {
         primary: '#60a5fa',
         secondary: '#93c5fd',
+        bg: '#F0F8FF',
       },
     },
   },
   darkMode: "class",
   plugins: [heroui()],
-  important: true,
 };

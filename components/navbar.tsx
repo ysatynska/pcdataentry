@@ -45,19 +45,13 @@ export const NextUINavbar = () => {
         className="border-b-2 border-b-primary flex"
       >
       <NavbarBrand className="!basis-16 !flex-shrink-0">
-          <Link
-          className="flex justify-start items-center"
-          href="https://www.roanoke.edu/student_life/sports_and_recreation"
-          target="_blank"
-          >
-            <Image
-                src="/RCShield.svg"
-                alt="RC"
-                height="100%"
-                width="100%"
-                radius="none" 
-            />
-          </Link>
+        <Image
+            src="/RCShield.svg"
+            alt="RC"
+            height="100%"
+            width="100%"
+            radius="none" 
+        />
       </NavbarBrand>
   
         <NavbarContent

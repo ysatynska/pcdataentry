@@ -88,23 +88,34 @@ const sql = neon(process.env.DATABASE_URL);
 // }
 
 export async function addStudentAction(formData: any) {
-  // const validatedFields = schemaRegister.safeParse({
-  //   name: formData.get("name"),
-  //   password: formData.get("password"),
-  //   email: formData.get("email"),
-  // });
-
-  // if (!validatedFields.success) {
-  //   return {
-  //     errors: validatedFields.error.flatten().fieldErrors,
-  //   };
-  // }
-  const now = new Date().toISOString();
   try {
     await sql`
-      INSERT INTO students (name, age, sex, grade, address, phone_number, created_at, created_by, updated_at, updated_by)
-      VALUES (${formData.name}, ${formData.age}, ${formData.sex}, ${formData.grade}, ${formData.address}, ${formData.phone_number}, ${now}, 1, ${now}, 1)
+      INSERT INTO students (name, age, sex, grade, address, phone_number, created_by, updated_by)
+      VALUES (${formData.name}, ${formData.age}, ${formData.sex}, ${formData.grade}, ${formData.address}, ${formData.phone_number}, 1, 1)
     `;
+    return { success: true };
+  } catch (error) {
+    console.log("Database Error: ", error);
+    return { success: false };
+  }
+}
+
+export async function addSectionAction(formData: any) {
+  try {
+    const [evaluation] = await sql`
+      INSERT INTO evaluations (student_id, created_by, updated_by)
+      VALUES (${formData.student_id}, 1, 1)
+      RETURNING id AS evaluation_id
+    `;
+
+    const evaluationId = evaluation.evaluation_id;
+    const entries = Object.entries(formData).filter(([key]) => key !== 'student_id');
+    for (const [sectionId, score] of entries) {
+      await sql`
+        INSERT INTO evaluation_section_map (evaluation_id, section_id, score, created_by, updated_by)
+        VALUES (${evaluationId}, ${sectionId}, ${score}, 1, 1)
+      `;
+    }
     return { success: true };
   } catch (error) {
     console.log("Database Error: ", error);
