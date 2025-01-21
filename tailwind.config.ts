@@ -16,7 +16,5 @@ module.exports = {
         bg: '#F0F8FF',
       },
     },
-  },
-  darkMode: "class",
-  plugins: [heroui()],
+  }
 };
