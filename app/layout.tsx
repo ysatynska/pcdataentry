@@ -42,7 +42,7 @@ export default function RootLayout({
       className={`${fontSans.variable} light`}
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bg h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bg min-h-screen`}
       >
         <Providers>
         <NextUINavbar/>

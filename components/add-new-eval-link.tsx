@@ -5,7 +5,7 @@ export default function AddNewLink ({ student_id }: { student_id: string }) {
     
     return (
       <Link href={`/${student_id}/add_eval`} className="mt-5 text-xl">
-        Add New
+        Add New Evaluation
       </Link>
     )
 }
