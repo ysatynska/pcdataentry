@@ -37,34 +37,34 @@ export default function DefaultTable({ items, columns }: { items: any[], columns
 
   const pages = Math.ceil(items.length / rowsPerPage);
 
-  // const sortedItems = useMemo(() => {
-  //   const sorted = [...items].sort((a, b) => {
-  //     let first = a[sortDescriptor.column];
-  //     let second = b[sortDescriptor.column];
+  const sortedItems = useMemo(() => {
+    const sorted = [...items].sort((a, b) => {
+      let first = a[sortDescriptor.column];
+      let second = b[sortDescriptor.column];
 
-  //     // Handle sorting for numbers
-  //     if (typeof first === 'number' && typeof second === 'number') {
-  //       return sortDescriptor.direction === 'ascending' ? first - second : second - first;
-  //     }
+      // Handle sorting for numbers
+      if (typeof first === 'number' && typeof second === 'number') {
+        return sortDescriptor.direction === 'ascending' ? first - second : second - first;
+      }
 
-  //     // Handle sorting for strings
-  //     if (typeof first === 'string' && typeof second === 'string') {
-  //       return sortDescriptor.direction === 'ascending'
-  //         ? first.localeCompare(second)
-  //         : second.localeCompare(first);
-  //     }
+      // Handle sorting for strings
+      if (typeof first === 'string' && typeof second === 'string') {
+        return sortDescriptor.direction === 'ascending'
+          ? first.localeCompare(second)
+          : second.localeCompare(first);
+      }
 
-  //     return 0;
-  //   });
+      return 0;
+    });
 
-  //   return sorted;
-  // }, [items, sortDescriptor]);
+    return sorted;
+  }, [items, sortDescriptor]);
 
-  // const rowItems = useMemo(() => {
-  //   const start = (page - 1) * rowsPerPage;
-  //   const end = start + rowsPerPage;
-  //   return sortedItems.slice(start, end);
-  // }, [page, rowsPerPage, sortedItems]);
+  const rowItems = useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    return sortedItems.slice(start, end);
+  }, [page, rowsPerPage, sortedItems]);
 
   const handleSort = (columnKey: string) => {
     console.log("in handle sort");
@@ -119,7 +119,7 @@ export default function DefaultTable({ items, columns }: { items: any[], columns
           )}
         </TableHeader>
         <TableBody>
-          {items.map((rowItem: any) => (
+          {rowItems.map((rowItem: any) => (
             <TableRow key={rowItem.id}>
               {(columnKey) => <TableCell>{getKeyValue(rowItem, columnKey)}</TableCell>}
             </TableRow>
