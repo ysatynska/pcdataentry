@@ -3,11 +3,11 @@
 // import { signIn } from '@/app/lib/auth';
 // import { AuthError } from 'next-auth';
 // import { z } from "zod";
-import { redirect } from 'next/navigation';
 // import bcrypt from 'bcrypt';
 import { neon } from '@neondatabase/serverless';
 if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not defined in environment variables.');
 const sql = neon(process.env.DATABASE_URL);
+import { revalidatePath } from 'next/cache';
 
 // export async function authenticate(
 //   prevState: string | undefined,
@@ -93,6 +93,7 @@ export async function addStudentAction(formData: any) {
       INSERT INTO students (name, age, sex, grade, address, phone_number, created_by, updated_by)
       VALUES (${formData.name}, ${formData.age}, ${formData.sex}, ${formData.grade}, ${formData.address}, ${formData.phone_number}, 1, 1)
     `;
+    revalidatePath('/student_lookup');
     return { success: true };
   } catch (error) {
     console.log("Database Error: ", error);
