@@ -3,6 +3,7 @@ import React from 'react';
 import { addStudentAction } from "@/app/lib/actions";
 import {Form, Input, Button} from "@heroui/react";
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 export default function AddStudentForm () {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -11,6 +12,7 @@ export default function AddStudentForm () {
         const result = await addStudentAction(formData);
     
         if (result.success) {
+            revalidatePath('/student_lookup');
             redirect('/student_lookup');
         }
     };

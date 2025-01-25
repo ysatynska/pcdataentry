@@ -104,7 +104,6 @@ export default function DefaultTable({ items, columns }: { items: any[], columns
         classNames={{
           wrapper: "min-h-[222px] outline outline-primary",
         }}
-        onRowAction={() => console.log("on row action")}
       >
         <TableHeader columns={columns}>
           {(column) => (
