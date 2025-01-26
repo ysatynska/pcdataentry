@@ -8,7 +8,7 @@ const Bar = dynamic(() => import('react-chartjs-2').then((mod) => mod.Bar), {
     ssr: false,
 });
 
-export default function AverageScoresBarChart({sections, forGrade}: {sections:any[], forGrade: string | null}) {
+export default function AverageScoresBarChart({sections, grade}: {sections:any[], grade: any}) {
 
     const data = {
         labels : sections.map((id: any) => `${id.short_name}`),
@@ -29,7 +29,7 @@ export default function AverageScoresBarChart({sections, forGrade}: {sections:an
             },
             title: {
                 display: true,
-                text: `Section Averages ${forGrade ? `for Grade ${forGrade}` : 'Across All Grades'}`,
+                text: `${grade ? `${grade.name}` : 'Promedios por sección entre cursos'}`,
                 font: {
                     size: 20, 
                 },
@@ -43,8 +43,7 @@ export default function AverageScoresBarChart({sections, forGrade}: {sections:an
         scales: {
             x: {
                 title: {
-                    display: true, 
-                    text: "Section Name", 
+                    display: true,
                     font: {
                         size: 16,
                     },
@@ -55,10 +54,10 @@ export default function AverageScoresBarChart({sections, forGrade}: {sections:an
             },
             y: {
                 beginAtZero: true, 
-                max: 20, // Set the maximum value of the Y-axis
+                max: Math.max(...sections.map((section: any) => section.total_score)), // Set the maximum value of the Y-axis
                 title: {
                     display: true, 
-                    text: "Average Score", 
+                    text: "Puntuación promedio", 
                     font: {
                         size: 16,
                     },

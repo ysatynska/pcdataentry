@@ -84,14 +84,15 @@ export async function fetchAveragesBySectionID(){
       SELECT 
         e.section_id, 
         AVG(score) AS avg, 
-        s.short_name
+        s.short_name,
+        s.total_score
       FROM 
         evaluation_section_map e
       JOIN 
         sections s 
         ON s.id = e.section_id
       GROUP BY 
-        e.section_id, s.short_name
+        e.section_id, s.short_name, s.total_score
       ORDER BY 
         e.section_id;
     `;
@@ -129,7 +130,8 @@ export async function fetchAveragesForGrade(grade: string){
         s.grade,
         sec.id AS section_id,
         sec.short_name,
-        AVG(esm.score) AS avg
+        AVG(esm.score) AS avg,
+        sec.total_score
       FROM 
         students s
       JOIN 
@@ -141,7 +143,7 @@ export async function fetchAveragesForGrade(grade: string){
       WHERE 
         s.grade = ${grade}
       GROUP BY 
-        s.grade, sec.id, sec.short_name
+        s.grade, sec.id, sec.short_name, sec.total_score
       ORDER BY 
         sec.id;
     `;
@@ -159,6 +161,21 @@ export async function fetchAllGrades () {
       SELECT DISTINCT grade
       FROM students
       ORDER BY grade
+    `;
+    return grades;
+  }
+  catch(error: any){
+    console.error('Error fetching grades: ', error);
+    throw new Error('Failed to fetch grades.');
+  }
+}
+
+export async function fetchGrades() {
+  try{
+    const grades = await sql `
+      SELECT id, name
+      FROM grades
+      ORDER BY id
     `;
     return grades;
   }

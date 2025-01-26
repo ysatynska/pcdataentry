@@ -4,7 +4,7 @@ import { addStudentAction } from "@/app/lib/actions";
 import {Form, Input, Button} from "@heroui/react";
 import { redirect } from 'next/navigation';
 
-export default function AddStudentForm () {
+export default function AddStudentForm ({grades}: {grades: any}) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget));
@@ -28,7 +28,7 @@ export default function AddStudentForm () {
                 labelPlacement="outside"
                 name="name"
                 placeholder="Enter the student's full name"
-                type="name"
+                type="text"
             />
             <Input
                 isRequired
