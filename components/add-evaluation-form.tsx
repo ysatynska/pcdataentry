@@ -2,7 +2,7 @@
 import { Card, CardBody, CardFooter } from "@heroui/react";
 import { Form, Input, Button } from "@heroui/react";
 import { redirect } from "next/navigation";
-import { addSectionAction } from "@/app/lib/actions";
+import { addEvaluationAction } from "@/app/lib/actions";
 
 export default function AddEvaluationForm({
   student,
@@ -14,7 +14,7 @@ export default function AddEvaluationForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.currentTarget));
-    const result = await addSectionAction(formData);
+    const result = await addEvaluationAction(formData);
 
     if (result.success) {
       redirect(`/${student.id}/overview`);
