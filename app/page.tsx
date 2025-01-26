@@ -23,25 +23,25 @@ export default async function Home() {
 
   return (
     <div className="w-full">
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <section className="mb-12">
-          <div className="bg-white outline outline-primary shadow rounded-lg p-6">
-            <AverageScoresBarChart sections={sections} forGrade={null}/>
-          </div>
-        </section>
-
-        <section className="mb-12">
-          <div className="flex flex-row flex-wrap justify-center">
-            {filteredGradesData.map((gradeData) => (
-              <section key={`${gradeData.grade.grade}`} className="mb-12 size-full">
-                <div className="bg-white outline outline-primary shadow rounded-lg p-6">
-                  <AverageScoresBarChart sections={gradeData.sections} forGrade={gradeData.grade.grade}/>
-                </div>
-              </section>
-            ))}
-          </div>
-        </section>
-      </div>
+      <section>
+        <h1 className="text-2xl mb-6 text-primary font-bold">1. Overall Summary</h1>
+        <div className="bg-white shadow rounded-lg p-6">
+          <AverageScoresBarChart sections={sections} forGrade={null}/>
+        </div>
+      </section>
+      <hr className="border-t-1 border-primary my-10"></hr>
+      <section>
+        <h1 className="text-2xl mb-6 text-primary font-bold">2. Summary by Grade</h1>
+        <div className="grid grid-cols-2 gap-4 flex-wrap justify-center">
+          {filteredGradesData.map((gradeData) => (
+            <section key={`${gradeData.grade.grade}`}>
+              <div className="bg-white shadow rounded-lg p-6">
+                <AverageScoresBarChart sections={gradeData.sections} forGrade={gradeData.grade.grade}/>
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
