@@ -32,16 +32,16 @@ export const columnsStudent = [
       label: "Name",
     },
     {
-      key: "age",
-      label: "Age",
-    },
-    {
       key: "sex",
       label: "Sex",
     },
     {
       key: "grade",
       label: "Grade",
+    },
+    {
+      key: "age",
+      label: "Age",
     },
     {
       key: "address",

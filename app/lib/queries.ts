@@ -20,15 +20,13 @@ export async function fetchAllSections() {
 }
 
 export async function fetchStudents() {
-  console.log("in fetching students");
     try {
       const students = await sql`
-        SELECT id, name, age, grade, sex, address, phone_number
+        SELECT id, name, grade, sex, address, phone_number, age
         FROM students
         WHERE deleted_at IS NULL
         ORDER BY name desc;
       `;
-      console.log("students fetched: ", students);
       return students;
     } catch (error: any) {
       console.error('Error fetching students:', error);

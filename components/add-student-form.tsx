@@ -32,15 +32,6 @@ export default function AddStudentForm () {
             />
             <Input
                 isRequired
-                errorMessage="Please enter a valid age"
-                label="Age"
-                labelPlacement="outside"
-                name="age"
-                placeholder="Enter the student's age"
-                type="number"
-            />
-            <Input
-                isRequired
                 errorMessage="Please enter a valid sex"
                 label="Sex"
                 labelPlacement="outside"
@@ -50,11 +41,21 @@ export default function AddStudentForm () {
             />
             <Input
                 isRequired
-                errorMessage="Please enter a valid grade"
+                errorMessage="Grade has to be between 1 and 7"
                 label="Grade"
                 labelPlacement="outside"
                 name="grade"
                 placeholder="Enter the student's grade in school"
+                type="number"
+                min="1"
+                max="7"
+            />
+            <Input
+                errorMessage="Please enter a valid age"
+                label="Age"
+                labelPlacement="outside"
+                name="age"
+                placeholder="Enter the student's age"
                 type="number"
             />
             <Input

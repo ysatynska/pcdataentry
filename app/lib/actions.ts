@@ -90,8 +90,8 @@ import { revalidatePath } from 'next/cache';
 export async function addStudentAction(formData: any) {
   try {
     await sql`
-      INSERT INTO students (name, age, sex, grade, address, phone_number, created_by, updated_by)
-      VALUES (${formData.name}, ${formData.age}, ${formData.sex}, ${formData.grade}, ${formData.address}, ${formData.phone_number}, 1, 1)
+      INSERT INTO students (name, age, grade, sex, address, phone_number, created_by, updated_by)
+      VALUES (${formData.name}, ${formData.age}, ${formData.grade}, ${formData.sex}, ${formData.address}, ${formData.phone_number}, 1, 1)
     `;
     revalidatePath('/student_lookup');
     return { success: true };
