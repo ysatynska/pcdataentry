@@ -1,7 +1,6 @@
 import React from "react";
 import { fetchAveragesBySectionID, fetchAveragesForGrade, fetchAllGrades } from "./lib/queries";
 import AverageScoresBarChart from "@/components/average-scores-barchart";
-import AvgScoresGradeBarChart from "@/components/avg-scores-grades-barchart";
 
 export default async function Home() {
   const sections = await fetchAveragesBySectionID();

@@ -55,6 +55,7 @@ export default function AverageScoresBarChart({sections, forGrade}: {sections:an
             },
             y: {
                 beginAtZero: true, 
+                max: 15, // Set the maximum value of the Y-axis
                 title: {
                     display: true, 
                     text: "Average Score", 
