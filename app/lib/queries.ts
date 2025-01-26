@@ -81,9 +81,29 @@ export async function fetchEvaluations(student_id: any) {
 export async function fetchEvaluationsBySectionID(){
   try{
     const evals = await sql `
-    SELECT evaluation_id, SUM(score)
+    SELECT section_id, AVG(score)
     FROM evaluation_section_map
-    GROUP BY evaluation_id
+    GROUP BY section_id
+    ORDER BY section_id
+    `;
+    return evals;
+  }
+  catch(error: any){
+    console.error('Error fetching evaluations.');
+    throw new Error('Failed to fetch evaluations.');
+  }
+}
+
+export async function fetchTop5EvaluationSumsByStudents(){
+  try{
+    const evals = await sql `
+    SELECT s.name, SUM(esm.score) as total_score
+    FROM evaluation_section_map esm
+    JOIN evaluations e ON esm.evaluation_id = e.id
+    JOIN students s ON e.student_id = s.id
+    GROUP BY s.id, s.name
+    ORDER BY total_score DESC
+    LIMIT 5
     `;
     return evals;
   }
