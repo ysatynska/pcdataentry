@@ -78,18 +78,27 @@ export async function fetchEvaluations(student_id: any) {
   }
 }
 
-export async function fetchEvaluationsBySectionID(){
+export async function fetchAveragesBySectionID(){
   try{
-    const evals = await sql `
-    SELECT section_id, AVG(score)
-    FROM evaluation_section_map
-    GROUP BY section_id
-    ORDER BY section_id
+    const avgs = await sql `
+      SELECT 
+        e.section_id, 
+        AVG(score) AS avg, 
+        s.short_name
+      FROM 
+        evaluation_section_map e
+      JOIN 
+        sections s 
+        ON s.id = e.section_id
+      GROUP BY 
+        e.section_id, s.short_name
+      ORDER BY 
+        e.section_id;
     `;
-    return evals;
+    return avgs;
   }
   catch(error: any){
-    console.error('Error fetching evaluations.');
+    console.error('Error fetching averages, ', error);
     throw new Error('Failed to fetch evaluations.');
   }
 }
@@ -110,5 +119,51 @@ export async function fetchTop5EvaluationSumsByStudents(){
   catch(error: any){
     console.error('Error fetching evaluations.');
     throw new Error('Failed to fetch evaluations.');
+  }
+}
+
+export async function fetchAveragesForGrade(grade: string){
+  try{
+    const avgs = await sql`
+      SELECT 
+        s.grade,
+        sec.id AS section_id,
+        sec.short_name,
+        AVG(esm.score) AS avg
+      FROM 
+        students s
+      JOIN 
+        evaluations e ON s.id = e.student_id
+      JOIN 
+        evaluation_section_map esm ON e.id = esm.evaluation_id
+      JOIN 
+        sections sec ON esm.section_id = sec.id
+      WHERE 
+        s.grade = ${grade}
+      GROUP BY 
+        s.grade, sec.id, sec.short_name
+      ORDER BY 
+        sec.id;
+    `;
+    return avgs;
+  }
+  catch(error: any){
+    console.error('Error fetching averages: ', error);
+    throw new Error('Failed to fetch evaluations.');
+  }
+}
+
+export async function fetchAllGrades () {
+  try{
+    const grades = await sql `
+      SELECT DISTINCT grade
+      FROM students
+      ORDER BY grade
+    `;
+    return grades;
+  }
+  catch(error: any){
+    console.error('Error fetching grades: ', error);
+    throw new Error('Failed to fetch grades.');
   }
 }

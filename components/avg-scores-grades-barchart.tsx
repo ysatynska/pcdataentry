@@ -8,14 +8,13 @@ const Bar = dynamic(() => import('react-chartjs-2').then((mod) => mod.Bar), {
     ssr: false,
 });
 
-export default function AverageScoresBarChart({sections, forGrade}: {sections:any[], forGrade: string | null}) {
-
+export default function AvgScoresGradeBarChart({ gradeData }: { gradeData: any }) {
     const data = {
-        labels : sections.map((id: any) => `${id.short_name}`),
+        labels: gradeData.sections.map((section: any) => `${section.short_name}`),
         datasets: [
             { 
-                label: 'Average Values',
-                data: sections.map((section: any) => parseFloat(parseFloat(section.avg).toFixed(2)))
+                label: 'Average Scores',
+                data: gradeData.sections.map((section: any) => parseFloat(parseFloat(section.avg_score).toFixed(2)))
             }
         ]
     };
@@ -29,7 +28,7 @@ export default function AverageScoresBarChart({sections, forGrade}: {sections:an
             },
             title: {
                 display: true,
-                text: `Section Averages ${forGrade ? `for Grade ${forGrade}` : 'Across All Grades'}`,
+                text: `Average Scores for Grade ${gradeData.grade}`,
                 font: {
                     size: 20, 
                 },
@@ -74,6 +73,6 @@ export default function AverageScoresBarChart({sections, forGrade}: {sections:an
     };
 
     return (
-        <Bar data={data} options={options}/>
+        <Bar data={data} options={options} />
     );
 };
