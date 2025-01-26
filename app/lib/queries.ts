@@ -77,3 +77,18 @@ export async function fetchEvaluations(student_id: any) {
     throw new Error('Failed to fetch evaluations.');
   }
 }
+
+export async function fetchEvaluationsBySectionID(){
+  try{
+    const evals = await sql `
+    SELECT evaluation_id, SUM(score)
+    FROM evaluation_section_map
+    GROUP BY evaluation_id
+    `;
+    return evals;
+  }
+  catch(error: any){
+    console.error('Error fetching evaluations.');
+    throw new Error('Failed to fetch evaluations.');
+  }
+}
