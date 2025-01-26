@@ -2,7 +2,6 @@
 import React from 'react';
 import { addStudentAction } from "@/app/lib/actions";
 import {Form, Input, Button} from "@heroui/react";
-import { useRouter } from 'next/router';
 import { redirect } from 'next/navigation';
 
 export default function AddStudentForm () {
@@ -12,7 +11,7 @@ export default function AddStudentForm () {
         const result = await addStudentAction(formData);
     
         if (result.success) {
-            redirect('/');
+            redirect("/student_lookup");
         }
     };
 
