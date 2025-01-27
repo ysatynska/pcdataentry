@@ -20,15 +20,13 @@ export async function fetchAllSections() {
 }
 
 export async function fetchStudents() {
-  console.log("in fetching students");
     try {
       const students = await sql`
-        SELECT id, name, age, grade, sex, address, phone_number
+        SELECT id, name, grade, sex, address, phone_number, age
         FROM students
         WHERE deleted_at IS NULL
         ORDER BY name desc;
       `;
-      console.log("students fetched: ", students);
       return students;
     } catch (error: any) {
       console.error('Error fetching students:', error);
@@ -77,5 +75,112 @@ export async function fetchEvaluations(student_id: any) {
   } catch (error: any) {
     console.error('Error fetching evaluations with student_id ', student_id, '.');
     throw new Error('Failed to fetch evaluations.');
+  }
+}
+
+export async function fetchAveragesBySectionID(){
+  try{
+    const avgs = await sql `
+      SELECT 
+        e.section_id, 
+        AVG(score) AS avg, 
+        s.short_name,
+        s.total_score
+      FROM 
+        evaluation_section_map e
+      JOIN 
+        sections s 
+        ON s.id = e.section_id
+      GROUP BY 
+        e.section_id, s.short_name, s.total_score
+      ORDER BY 
+        e.section_id;
+    `;
+    return avgs;
+  }
+  catch(error: any){
+    console.error('Error fetching averages, ', error);
+    throw new Error('Failed to fetch evaluations.');
+  }
+}
+
+export async function fetchTop5EvaluationSumsByStudents(){
+  try{
+    const evals = await sql `
+    SELECT s.name, SUM(esm.score) as total_score
+    FROM evaluation_section_map esm
+    JOIN evaluations e ON esm.evaluation_id = e.id
+    JOIN students s ON e.student_id = s.id
+    GROUP BY s.id, s.name
+    ORDER BY total_score DESC
+    LIMIT 5
+    `;
+    return evals;
+  }
+  catch(error: any){
+    console.error('Error fetching evaluations.');
+    throw new Error('Failed to fetch evaluations.');
+  }
+}
+
+export async function fetchAveragesForGrade(grade: string){
+  try{
+    const avgs = await sql`
+      SELECT 
+        s.grade,
+        sec.id AS section_id,
+        sec.short_name,
+        AVG(esm.score) AS avg,
+        sec.total_score
+      FROM 
+        students s
+      JOIN 
+        evaluations e ON s.id = e.student_id
+      JOIN 
+        evaluation_section_map esm ON e.id = esm.evaluation_id
+      JOIN 
+        sections sec ON esm.section_id = sec.id
+      WHERE 
+        s.grade = ${grade}
+      GROUP BY 
+        s.grade, sec.id, sec.short_name, sec.total_score
+      ORDER BY 
+        sec.id;
+    `;
+    return avgs;
+  }
+  catch(error: any){
+    console.error('Error fetching averages: ', error);
+    throw new Error('Failed to fetch evaluations.');
+  }
+}
+
+export async function fetchAllGrades () {
+  try{
+    const grades = await sql `
+      SELECT DISTINCT grade
+      FROM students
+      ORDER BY grade
+    `;
+    return grades;
+  }
+  catch(error: any){
+    console.error('Error fetching grades: ', error);
+    throw new Error('Failed to fetch grades.');
+  }
+}
+
+export async function fetchGrades() {
+  try{
+    const grades = await sql `
+      SELECT id, name
+      FROM grades
+      ORDER BY id
+    `;
+    return grades;
+  }
+  catch(error: any){
+    console.error('Error fetching grades: ', error);
+    throw new Error('Failed to fetch grades.');
   }
 }

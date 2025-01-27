@@ -4,7 +4,7 @@ import { addStudentAction } from "@/app/lib/actions";
 import {Form, Input, Button} from "@heroui/react";
 import { redirect } from 'next/navigation';
 
-export default function AddStudentForm () {
+export default function AddStudentForm ({grades}: {grades: any}) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget));
@@ -28,16 +28,7 @@ export default function AddStudentForm () {
                 labelPlacement="outside"
                 name="name"
                 placeholder="Enter the student's full name"
-                type="name"
-            />
-            <Input
-                isRequired
-                errorMessage="Please enter a valid age"
-                label="Age"
-                labelPlacement="outside"
-                name="age"
-                placeholder="Enter the student's age"
-                type="number"
+                type="text"
             />
             <Input
                 isRequired
@@ -50,11 +41,21 @@ export default function AddStudentForm () {
             />
             <Input
                 isRequired
-                errorMessage="Please enter a valid grade"
+                errorMessage="Grade has to be between 1 and 7"
                 label="Grade"
                 labelPlacement="outside"
                 name="grade"
                 placeholder="Enter the student's grade in school"
+                type="number"
+                min="1"
+                max="7"
+            />
+            <Input
+                errorMessage="Please enter a valid age"
+                label="Age"
+                labelPlacement="outside"
+                name="age"
+                placeholder="Enter the student's age"
                 type="number"
             />
             <Input
