@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
+    "@auth/pg-adapter": "^1.7.4",
     "@heroicons/react": "^2.2.0",
     "@heroui/react": "^2.6.13",
     "@heroui/system": "^2.4.7",
