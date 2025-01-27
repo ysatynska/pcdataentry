@@ -102,7 +102,7 @@ export default function DefaultTable({ items, columns }: { items: any[], columns
           </div>
         }
         classNames={{
-          wrapper: "min-h-[222px] outline outline-primary",
+          wrapper: "min-h-[222px]",
         }}
       >
         <TableHeader columns={columns}>
