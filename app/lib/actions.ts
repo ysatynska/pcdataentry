@@ -101,7 +101,7 @@ export async function addStudentAction(formData: any) {
   }
 }
 
-export async function addSectionAction(formData: any) {
+export async function addEvaluationAction(formData: any) {
   try {
     const [evaluation] = await sql`
       INSERT INTO evaluations (student_id, created_by, updated_by)
@@ -117,6 +117,7 @@ export async function addSectionAction(formData: any) {
         VALUES (${evaluationId}, ${sectionId}, ${score}, 1, 1)
       `;
     }
+    revalidatePath(`/${formData.student_id}/overview`);
     return { success: true };
   } catch (error) {
     console.log("Database Error: ", error);
