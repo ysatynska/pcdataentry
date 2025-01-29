@@ -15,7 +15,7 @@ export default function AverageScoresBarChart({sections, grade}: {sections:any[]
         datasets: [
             { 
                 label: 'Average Values',
-                data: sections.map((section: any) => parseFloat(parseFloat(section.avg).toFixed(2)))
+                data: sections.map((section: any) => Number((section.avg * 100 / section.total_score).toFixed(2)))
             }
         ]
     };
@@ -54,7 +54,7 @@ export default function AverageScoresBarChart({sections, grade}: {sections:any[]
             },
             y: {
                 beginAtZero: true, 
-                max: Math.max(...sections.map((section: any) => section.total_score)), // Set the maximum value of the Y-axis
+                // max: Math.max(...sections.map((section: any) => section.total_score)), // Set the maximum value of the Y-axis
                 title: {
                     display: true, 
                     text: "Puntuación promedio", 
