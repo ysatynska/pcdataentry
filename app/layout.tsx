@@ -5,6 +5,9 @@ import { Providers } from "./providers";
 import "./globals.css";
 import { fontSans } from "@/config/fonts";
 import { NextUINavbar } from "@/components/navbar";
+import { sessionUser } from '@/auth';
+import AddNameForm from '@/components/add-name-form';
+import SignInForm from "@/components/sign-in-form";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Peace Corps Student Evaluations",
+  title: "Student Evaluations",
   description: "Written by Liz Satynska, under MIT license",
 };
 
@@ -28,12 +31,12 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const session = await auth();
+  const user = await sessionUser();
   
   return (
     <html
@@ -44,12 +47,24 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bg min-h-screen`}
       >
-        <Providers>
-        <NextUINavbar/>
-          <main className="container mx-auto max-w-7xl px-3 py-10 md:py-10 md:px-10 flex-grow items-center justify-center relative flex flex-col">
-            {children}
-          </main>
-        </Providers>
+            {!user ? (
+              <main>
+                <SignInForm/>
+              </main>
+            ) : (
+              user.name ? (
+                <Providers>
+                  <NextUINavbar name={user.name}/>
+                  <main className="container mx-auto max-w-7xl px-3 py-10 md:py-10 md:px-10 flex-grow items-center justify-center relative flex flex-col">
+                    {children}
+                  </main>
+                </Providers>
+              ) : (
+                <main className="container mx-auto max-w-7xl px-3 py-10 md:py-10 md:px-10 flex-grow items-center justify-center relative flex flex-col">
+                  <AddNameForm email={user.email} />
+                </main>
+              )
+            )}
       </body>
     </html>
   );

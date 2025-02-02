@@ -31,7 +31,7 @@ const menuItems = [
     "Log Out",
 ];
 
-export const NextUINavbar = () => {
+export const NextUINavbar = ({ name } : { name: string }) => {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     // const [isMobile, setIsMobile] = useState(false);
@@ -87,10 +87,12 @@ export const NextUINavbar = () => {
           </NavbarItem>
         ) : ( */}
           <NavbarItem className="text-sm text-center">
-          Welcome, <br/> Brian Schwenk!
-            {/* <Link href="/signin" size="lg">
-              Login
-            </Link> */}
+            Welcome, <br/> {name}!
+          </NavbarItem>
+          <NavbarItem>
+            <Link href="/api/auth/signout" className="px-2 py-1 rounded-xl outline outline-primary text-sm">
+              Sign Out
+            </Link>
           </NavbarItem>
         {/* )} */}
         {/* <ThemeSwitcher /> */}
