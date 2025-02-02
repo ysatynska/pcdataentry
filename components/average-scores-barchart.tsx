@@ -55,6 +55,7 @@ export default function AverageScoresBarChart({sections, grade}: {sections:any[]
             y: {
                 beginAtZero: true, 
                 // max: Math.max(...sections.map((section: any) => section.total_score)), // Set the maximum value of the Y-axis
+                max: 100,
                 title: {
                     display: true, 
                     text: "Puntuación promedio", 
