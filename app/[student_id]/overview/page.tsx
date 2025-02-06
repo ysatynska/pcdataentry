@@ -19,7 +19,7 @@ export default async function StudentOverview({ params }: any) {
 
   return (
     <div className="text-center">
-      <p className="text-xl mb-5">{student.name} (grade {student.grade}, age {student.age})</p>
+      <p className="text-xl mb-5">{student.name} (grade {student.grade})</p>
       <div className="flex flex-row flex-wrap gap-8 justify-center">
         {evaluationsWithSections.map((evaluation, index) => (
           <EvaluationCard key={index} evaluation={evaluation} />
