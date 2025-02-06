@@ -12,6 +12,7 @@ export default function SignInForm() {
         >
           Sign In
         </a>
+        <p className="text-md text-red-600 mt-3">Emails might not go through to domains with certain security policies set. Gmail accounts normally work fine.</p>
       </div>
     </div>
   );
