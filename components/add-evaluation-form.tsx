@@ -7,9 +7,11 @@ import { addEvaluationAction } from "@/app/lib/actions";
 export default function AddEvaluationForm({
   student,
   sections,
+  user_id
 }: {
   student: any;
   sections: any;
+  user_id: string
 }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,6 +39,12 @@ export default function AddEvaluationForm({
           validationBehavior="native"
           onSubmit={handleSubmit}
         >
+          <Input
+            isRequired
+            name="user_id"
+            type="hidden"
+            value={user_id}
+          />
           <Input
               isRequired
               name="student_id"

@@ -19,12 +19,13 @@ export async function fetchAllSections() {
     }
 }
 
-export async function fetchStudents() {
+export async function fetchStudents(user_id: string) {
     try {
       const students = await sql`
         SELECT id, name, grade, sex, address, phone_number, age
         FROM students
         WHERE deleted_at IS NULL
+        AND created_by = ${user_id}
         ORDER BY name desc;
       `;
       return students;
@@ -34,12 +35,13 @@ export async function fetchStudents() {
     }
 }
 
-export async function fetchStudent(student_id: string) {
+export async function fetchStudent(student_id: string, user_id: string) {
   try {
     const student = await sql`
       SELECT id, name, age, grade, sex, address, phone_number
       FROM students
       WHERE deleted_at IS NULL
+      AND created_by = ${user_id}
       AND id = ${student_id};
     `;
     return student[0];
@@ -49,13 +51,14 @@ export async function fetchStudent(student_id: string) {
   }
 }
 
-export async function fetchSectionsByEvaluationId (evaluation_id: string) {
+export async function fetchSectionsByEvaluationId (evaluation_id: string, user_id: string) {
   try {
     const evaluations = await sql`
       SELECT s.id, s.name, s.description, s.total_score, esm.score
       FROM sections s
       JOIN evaluation_section_map esm ON esm.section_id = s.id
-      WHERE esm.evaluation_id = ${evaluation_id};
+      WHERE esm.evaluation_id = ${evaluation_id}
+      AND esm.created_by = ${user_id}
     `;
     return evaluations;
   } catch (error: any) {
@@ -64,12 +67,13 @@ export async function fetchSectionsByEvaluationId (evaluation_id: string) {
   }
 }
 
-export async function fetchEvaluations(student_id: any) {
+export async function fetchEvaluations(student_id: any, user_id: string) {
   try {
     const evaluations = await sql`
       SELECT id, created_at
       FROM evaluations
-      WHERE student_id = ${student_id};
+      WHERE student_id = ${student_id}
+      AND created_by = ${user_id}
     `;
     return evaluations;
   } catch (error: any) {
@@ -78,9 +82,9 @@ export async function fetchEvaluations(student_id: any) {
   }
 }
 
-export async function fetchAveragesBySectionID(){
+export async function fetchAveragesBySectionID(user_id: string){
   try{
-    const avgs = await sql `
+    const avgs = await sql`
       SELECT 
         e.section_id, 
         AVG(score) AS avg, 
@@ -91,11 +95,14 @@ export async function fetchAveragesBySectionID(){
       JOIN 
         sections s 
         ON s.id = e.section_id
+      WHERE 
+        e.created_by = ${user_id}
       GROUP BY 
         e.section_id, s.short_name, s.total_score
       ORDER BY 
         e.section_id;
     `;
+    console.log(avgs);
     return avgs;
   }
   catch(error: any){
@@ -104,13 +111,14 @@ export async function fetchAveragesBySectionID(){
   }
 }
 
-export async function fetchTop5EvaluationSumsByStudents(){
+export async function fetchTop5EvaluationSumsByStudents(user_id: string){
   try{
     const evals = await sql `
     SELECT s.name, SUM(esm.score) as total_score
     FROM evaluation_section_map esm
     JOIN evaluations e ON esm.evaluation_id = e.id
     JOIN students s ON e.student_id = s.id
+    WHERE s.created_by = ${user_id}
     GROUP BY s.id, s.name
     ORDER BY total_score DESC
     LIMIT 5
@@ -123,30 +131,36 @@ export async function fetchTop5EvaluationSumsByStudents(){
   }
 }
 
-export async function fetchAveragesForGrade(grade: string){
+export async function fetchAveragesForGrade(grade: string, user_id: string){
   try{
     const avgs = await sql`
       SELECT 
-        s.grade,
-        sec.id AS section_id,
-        sec.short_name,
-        AVG(esm.score) AS avg,
-        sec.total_score
+        e.section_id, 
+        AVG(e.score) AS avg, 
+        s.short_name,
+        s.total_score,
+        stu.grade
       FROM 
-        students s
+        evaluation_section_map e
       JOIN 
-        evaluations e ON s.id = e.student_id
+        sections s 
+        ON s.id = e.section_id
       JOIN 
-        evaluation_section_map esm ON e.id = esm.evaluation_id
+        evaluations eval
+        ON eval.id = e.evaluation_id
       JOIN 
-        sections sec ON esm.section_id = sec.id
+        students stu
+        ON stu.id = eval.student_id
       WHERE 
-        s.grade = ${grade}
+        e.created_by = ${user_id}
+      AND
+        stu.grade = ${grade}
       GROUP BY 
-        s.grade, sec.id, sec.short_name, sec.total_score
+        e.section_id, s.short_name, s.total_score, stu.grade
       ORDER BY 
-        sec.id;
+        e.section_id;
     `;
+    console.log(avgs)
     return avgs;
   }
   catch(error: any){

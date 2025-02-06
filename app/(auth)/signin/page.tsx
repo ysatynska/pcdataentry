@@ -1,11 +1,10 @@
-// import LoginForm from "@/components/login-form";
-
-export default function LoginPage() {
+// import { redirect } from "next/navigation"
+// import { signIn, providerMap } from "@/auth"
+// import { AuthError } from "next-auth"
+ 
+export default async function SignInPage() {
   return (
-    <main className="flex items-center justify-center h-[calc(100vh-10rem)]">
-      <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4">
-        {/* <LoginForm /> */}
-      </div>
-    </main>
-  );
+    <div className="flex flex-col gap-2">
+    </div>
+  )
 }

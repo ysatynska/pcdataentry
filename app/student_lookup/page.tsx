@@ -3,10 +3,12 @@ import DefaultTable from "@/components/default-table";
 import React from "react";
 import { fetchStudents } from "@/app/lib/queries";
 import { columnsStudent } from "@/app/lib/definitions";
+import { authUser, User } from '@/auth';
 
 
 export default async function Home() {
-  const students = await fetchStudents();
+  const user = await authUser() as User;
+  const students = await fetchStudents(user.id);
   
   return (
     <>
