@@ -1,16 +1,17 @@
 import React from "react";
-import { fetchAveragesBySectionID, fetchAveragesForGrade, fetchGrades } from "./lib/queries";
-import AverageScoresBarChart from "@/components/average-scores-barchart";
+import { fetchAveragesBySectionID, fetchAveragesPerSectionForGrade, fetchGrades, fetchAverageScoresPerStudent } from "./lib/queries";
 import { authUser, User } from '@/auth';
+import ChartsToggle from "@/components/partials/ChartsToggle";
 
 export default async function Home() {
   const user = await authUser() as User;
   const sections = await fetchAveragesBySectionID(user.id);
   const grades = await fetchGrades();
+  const avgPerStudent = await fetchAverageScoresPerStudent(user.id);
 
-  const gradesData = await Promise.all(
+  const gradesBarData = await Promise.all(
     grades.map(async (grade) => {
-      const averages = await fetchAveragesForGrade(grade.id, user.id);
+      const averages = await fetchAveragesPerSectionForGrade(grade.id, user.id);
       if (averages.length > 0) {
         return {
           grade: grade,
@@ -20,37 +21,40 @@ export default async function Home() {
       return null;
     })
   );
-  const filteredGradesData = gradesData.filter(item => item !== null);
+  const filteredBarData = gradesBarData.filter(item => item !== null);
+
+  const gradesPieData = await Promise.all(
+    grades.map(async (grade) => {
+      console.log(grade);
+      const averages = avgPerStudent.filter((item) => item.grade == grade.id);
+      if (averages.length > 0) {
+        const gradeCategories = { low: 0, medium: 0, high: 0 };
+  
+        averages.forEach((student: any) => {
+          const avgScore = parseFloat(student.avg_percent_score);
+  
+          if (avgScore < 20) {
+            gradeCategories.low++;
+          } else if (avgScore < 75) {
+            gradeCategories.medium++;
+          } else {
+            gradeCategories.high++;
+          }
+        });
+  
+        return {
+          grade: grade,
+          categories: gradeCategories
+        };
+      }
+      return null;
+    })
+  );
+  
+  const filteredPieData = gradesPieData.filter(item => item !== null);
+  console.log(filteredPieData);
 
   return (
-    <div className="w-full">
-      {sections.length > 0 ? (
-        <>
-          <section>
-            <h1 className="text-2xl mb-6 text-primary font-bold">1. Overall Summary</h1>
-            <div className="bg-white shadow rounded-lg px-6 pt-6">
-              <AverageScoresBarChart sections={sections} grade={null}/>
-            </div>
-          </section>
-          <hr className="border-t-1 border-primary my-10"></hr>
-          <section>
-            <h1 className="text-2xl mb-6 text-primary font-bold">2. Summary by Grade</h1>
-            <div className="grid grid-cols-2 gap-4 flex-wrap justify-center">
-              {filteredGradesData.map((gradeData) => (
-                <section key={`${gradeData.grade.id}`}>
-                  <div className="bg-white shadow rounded-lg px-6 pt-6">
-                    <AverageScoresBarChart sections={gradeData.sections} grade={gradeData.grade}/>
-                  </div>
-                </section>
-              ))}
-            </div>
-          </section>
-        </>
-      ) : (
-        <h2 className="text-2xl text-center">
-          Here you will see summary of students' performance once records are added.
-        </h2>
-      )}
-    </div>
+    <ChartsToggle sections={sections} filteredBarData={filteredBarData} avgPerStudent={avgPerStudent} filteredPieData={filteredPieData}/>
   );
 }
