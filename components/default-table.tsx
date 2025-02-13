@@ -17,12 +17,27 @@ function getKeyValue (item: any, columnKey: any) {
           {item[columnKey]}
         </Link>
       );
+    } else if (columnKey == "avg_percent_score") {
+      // Determine color based on the avg_percent_score value
+      let colorClass = "";
+      const score = parseFloat(item[columnKey]);
+  
+      if (score < 20) {
+        colorClass = "text-red-700 font-bold"; // Low
+      } else if (score < 75) {
+        colorClass = "text-yellow-700 font-bold"; // Medium
+      } else {
+        colorClass = "text-green-700 font-bold"; // High
+      }
+  
+      return <span className={colorClass}>{item[columnKey]}%</span>;
     } else {
       return item[columnKey];
     }
   } else {
     return "-";
   }
+  
 }
 
 export default function DefaultTable({ items, columns }: { items: any[], columns: Column[] }) {

@@ -22,7 +22,7 @@ export async function fetchAllSections() {
 export async function fetchStudents(user_id: string) {
     try {
       const students = await sql`
-        SELECT id, name, grade, sex, address, phone_number, age
+        SELECT id, name, grade
         FROM students
         WHERE deleted_at IS NULL
         AND created_by = ${user_id}
@@ -33,6 +33,43 @@ export async function fetchStudents(user_id: string) {
       console.error('Error fetching students:', error);
       throw new Error('Failed to fetch students.');
     }
+}
+
+export async function fetchStudentsWithAverages(user_id: string) {
+  try {
+    const students = await sql`
+      WITH section_scores AS (
+          SELECT 
+            s.name AS name, 
+            s.id AS id,
+            s.grade AS grade,
+            s.sex as sex,
+            sec.id as section_id, 
+            sec.total_score as total_score,
+            (SUM(esm.score) * 100.0) / SUM(sec.total_score) AS section_percent_score, 
+            AVG(esm.score) AS esm_score,
+            s.created_by AS created_by
+          FROM students s
+          JOIN evaluations e on e.student_id = s.id
+          JOIN evaluation_section_map esm on esm.evaluation_id = e.id
+          JOIN sections sec on esm.section_id = sec.id
+          WHERE s.created_by = ${user_id}
+          GROUP BY s.id, s.name, s.grade, s.created_by, sec.id, sec.total_score, s.sex
+      )
+      SELECT 
+          id,
+          name,
+          sex,
+          grade,
+          ROUND(AVG(section_percent_score), 2) AS avg_percent_score
+      FROM section_scores
+      GROUP BY id, name, grade, sex
+    `;
+    return students;
+  } catch (error: any) {
+    console.error('Error fetching students:', error);
+    throw new Error('Failed to fetch students.');
+  }
 }
 
 export async function fetchStudent(student_id: string, user_id: string) {
@@ -102,7 +139,6 @@ export async function fetchAveragesBySectionID(user_id: string){
       ORDER BY 
         e.section_id;
     `;
-    console.log(avgs);
     return avgs;
   }
   catch(error: any){
@@ -131,7 +167,7 @@ export async function fetchTop5EvaluationSumsByStudents(user_id: string){
   }
 }
 
-export async function fetchAveragesForGrade(grade: string, user_id: string){
+export async function fetchAveragesPerSectionForGrade(grade: string, user_id: string){
   try{
     const avgs = await sql`
       SELECT 
@@ -160,7 +196,6 @@ export async function fetchAveragesForGrade(grade: string, user_id: string){
       ORDER BY 
         e.section_id;
     `;
-    console.log(avgs)
     return avgs;
   }
   catch(error: any){
@@ -186,7 +221,7 @@ export async function fetchAllGrades () {
 
 export async function fetchGrades() {
   try{
-    const grades = await sql `
+    const grades = await sql`
       SELECT id, name
       FROM grades
       ORDER BY id
@@ -196,5 +231,113 @@ export async function fetchGrades() {
   catch(error: any){
     console.error('Error fetching grades: ', error);
     throw new Error('Failed to fetch grades.');
+  }
+}
+
+export async function fetchAverageScoresPerStudent (user_id: string) {
+  try {
+    const scores = await sql`
+      WITH section_scores AS (
+          SELECT 
+            s.name AS name, 
+            s.id AS student_id,
+            s.grade as grade, 
+            sec.id as section_id,
+            sec.total_score as total_score,
+            (SUM(esm.score) * 100.0) / SUM(sec.total_score) AS section_percent_score, 
+            AVG(esm.score) AS esm_score,
+            s.created_by AS created_by
+          FROM students s
+          JOIN evaluations e on e.student_id = s.id
+          JOIN evaluation_section_map esm on esm.evaluation_id = e.id
+          JOIN sections sec on esm.section_id = sec.id
+          WHERE s.created_by = ${user_id}
+          GROUP BY s.id, s.name, s.created_by, sec.id, sec.total_score, s.grade
+      )
+      SELECT 
+          student_id,
+          name,
+          grade,
+          AVG(section_percent_score) AS avg_percent_score,
+          SUM(esm_score) AS total_esm_score,
+          created_by
+      FROM section_scores
+      GROUP BY student_id, name, created_by, grade
+    `
+    return scores;
+  } catch (error: any) {
+    console.error('Error fetching avg. scores: ', error);
+    throw new Error('Failed to fetch avg. scores.');
+  }
+}
+
+export async function fetchAverageScoresByGrade (user_id: string) {
+  try {
+    const scores = await sql`
+      WITH section_scores AS (
+          SELECT 
+            s.name AS name, 
+            s.id AS student_id, 
+            sec.id as section_id,
+            sec.total_score as total_score,
+            (SUM(esm.score) * 100.0) / SUM(sec.total_score) AS section_percent_score, 
+            AVG(esm.score) AS esm_score,
+            s.created_by AS created_by
+          FROM students s
+          JOIN evaluations e on e.student_id = s.id
+          JOIN evaluation_section_map esm on esm.evaluation_id = e.id
+          JOIN sections sec on esm.section_id = sec.id
+          WHERE s.created_by = ${user_id}
+          GROUP BY s.id, s.name, s.created_by, sec.id, sec.total_score
+      )
+      SELECT 
+          student_id,
+          name,
+          AVG(section_percent_score) AS avg_percent_score,
+          SUM(esm_score) AS total_esm_score,
+          created_by
+      FROM section_scores
+      GROUP BY student_id, name, created_by
+    `
+    return scores;
+  } catch (error: any) {
+    console.error('Error fetching avg. scores: ', error);
+    throw new Error('Failed to fetch avg. scores.');
+  }
+}
+
+export async function fetchAverageScore (student_id: string, user_id: string) {
+  try {
+    const scores = await sql`
+      WITH section_scores AS (
+          SELECT 
+            s.name AS name, 
+            s.id AS student_id, 
+            sec.id as section_id,
+            sec.total_score as total_score,
+            (SUM(esm.score) * 100.0) / SUM(sec.total_score) AS section_percent_score, 
+            AVG(esm.score) AS esm_score,
+            s.created_by AS created_by
+          FROM students s
+          JOIN evaluations e on e.student_id = s.id
+          JOIN evaluation_section_map esm on esm.evaluation_id = e.id
+          JOIN sections sec on esm.section_id = sec.id
+          WHERE s.created_by = ${user_id}
+          WHERE s.id = ${student_id}
+          GROUP BY s.id, s.name, s.created_by, sec.id, sec.total_score
+      )
+      SELECT 
+          student_id,
+          name,
+          AVG(section_percent_score) AS avg_percent_score,
+          SUM(esm_score) AS total_esm_score,
+          created_by
+      FROM section_scores
+      GROUP BY student_id, name, created_by
+    `
+    return scores;
+  } catch (error: any) {
+    console.error('Error fetching avg. scores: ', error);
+    throw new Error('Failed to fetch avg. scores.');
   }
 }

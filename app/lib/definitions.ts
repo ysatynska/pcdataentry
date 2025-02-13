@@ -40,17 +40,9 @@ export const columnsStudent = [
       label: "Grade",
     },
     {
-      key: "age",
-      label: "Age",
-    },
-    {
-      key: "address",
-      label: "Address",
-    },
-    {
-      key: "phone_number",
-      label: "Phone number",
-    },
+      key: "avg_percent_score",
+      label: "Average (%)"
+    }
 ]
 
 export type Section = {
