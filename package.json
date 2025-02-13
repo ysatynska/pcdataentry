@@ -12,7 +12,7 @@
     "parcel-build": "parcel build src/index.html"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.6.0",
+    "@ant-design/icons": "^5.6.1",
     "@auth/pg-adapter": "^1.7.4",
     "@cubejs-client/core": "^0.31.63",
     "@heroicons/react": "^2.2.0",
@@ -25,27 +25,27 @@
     "chart.js": "^4.4.7",
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.2",
-    "next": "^15.1.6",
+    "next": "^15.1.7",
     "next-auth": "5.0.0-beta.25",
     "next-themes": "^0.4.4",
     "nodemailer": "^6.10.0",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.0.0",
-    "resend": "^4.1.1"
+    "resend": "^4.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20.17.16",
+    "@types/node": "^20.17.18",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
-    "parcel": "^2.13.3",
-    "postcss": "^8.5.1",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.7",
-    "prettier": "^3.4.2",
+    "parcel": "^2.13.3",
+    "postcss": "^8.5.2",
+    "prettier": "^3.5.1",
     "prettier-plugin-organize-imports": "^4.1.0",
-    "prettier-plugin-tailwindcss": "^0.6.11"
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
   }
 }
