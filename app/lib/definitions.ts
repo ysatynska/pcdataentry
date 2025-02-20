@@ -5,6 +5,29 @@ export type User = {
   password: string;
 };
 
+export type Grade = {
+  id: string,
+  name: string,
+}
+
+export type StudentAverage = {
+  grade: string;
+  avg_percent_score: string;
+  student_id: string,
+  name: string,
+  total_esm_score: number,
+  created_by: string,
+}
+
+export type SectionAverage = {
+  section_id: string;
+  average_score: number; 
+  avg: number, 
+  short_name: string,
+  total_score: number,
+  grade: number,
+}
+
 export const columnsUser = [
   {
     key: "name",

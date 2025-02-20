@@ -1,4 +1,4 @@
-import { User, Section, Student, StudentSectionCourseMap, Course } from "@/app/lib/definitions";
+import { User, Section, Student, StudentSectionCourseMap, Course, Grade, StudentAverage, SectionAverage } from "@/app/lib/definitions";
 import { neon } from '@neondatabase/serverless';
 
 if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not defined in environment variables.');
@@ -12,7 +12,7 @@ export async function fetchAllSections() {
         WHERE deleted_at IS NULL
         ORDER BY id;
       `;
-      return sections;
+      return sections as Section[];
     } catch (error) {
       console.error('Error fetching sections:', error);
       throw new Error('Failed to fetch sections.');
@@ -81,7 +81,7 @@ export async function fetchStudent(student_id: string, user_id: string) {
       AND created_by = ${user_id}
       AND id = ${student_id};
     `;
-    return student[0];
+    return student[0] as Student;
   } catch (error: any) {
     console.error('Error fetching student with id ', student_id, ": ", error);
     throw new Error('Failed to fetch student.');
@@ -196,7 +196,7 @@ export async function fetchAveragesPerSectionForGrade(grade: string, user_id: st
       ORDER BY 
         e.section_id;
     `;
-    return avgs;
+    return avgs as SectionAverage[];
   }
   catch(error: any){
     console.error('Error fetching averages: ', error);
@@ -226,7 +226,7 @@ export async function fetchGrades() {
       FROM grades
       ORDER BY id
     `;
-    return grades;
+    return grades as Grade[];
   }
   catch(error: any){
     console.error('Error fetching grades: ', error);
@@ -264,7 +264,7 @@ export async function fetchAverageScoresPerStudent (user_id: string) {
       FROM section_scores
       GROUP BY student_id, name, created_by, grade
     `
-    return scores;
+    return scores as StudentAverage[];
   } catch (error: any) {
     console.error('Error fetching avg. scores: ', error);
     throw new Error('Failed to fetch avg. scores.');
