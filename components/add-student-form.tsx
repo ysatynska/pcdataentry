@@ -4,12 +4,27 @@ import { addStudentAction } from "@/app/lib/actions";
 import { Form, Input, Button } from "@heroui/react";
 import { redirect } from 'next/navigation';
 
-export default function AddStudentForm ({grades, user_id}: {grades: any, user_id: string}) {
+interface StudentFormData {
+    user_id: string;
+    name: string;
+    sex: string;
+    grade: number;
+}
+
+export default function AddStudentForm({ grades, user_id }: { grades: any; user_id: string }) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget));
-        const result = await addStudentAction(formData);
-    
+
+        const studentData: StudentFormData = {
+            user_id: user_id,
+            name: formData.name as string,
+            sex: formData.sex as string,
+            grade: parseInt(formData.grade as string, 10),
+        };
+
+        const result = await addStudentAction(studentData);
+
         if (result.success) {
             redirect("/student_lookup");
         }
@@ -21,12 +36,8 @@ export default function AddStudentForm ({grades, user_id}: {grades: any, user_id
             validationBehavior="native"
             onSubmit={handleSubmit}
         >
-            <Input
-                isRequired
-                name="user_id"
-                type="hidden"
-                value={user_id}
-            />
+            <Input isRequired name="user_id" type="hidden" value={user_id} />
+
             <Input
                 isRequired
                 errorMessage="Please enter a valid name"
@@ -36,6 +47,7 @@ export default function AddStudentForm ({grades, user_id}: {grades: any, user_id
                 placeholder="Enter the student's full name"
                 type="text"
             />
+
             <Input
                 isRequired
                 errorMessage="Please enter a valid sex"
@@ -45,6 +57,7 @@ export default function AddStudentForm ({grades, user_id}: {grades: any, user_id
                 placeholder="Enter the student's sex"
                 type="text"
             />
+
             <Input
                 isRequired
                 errorMessage="Grade has to be between 1 and 7"
@@ -56,30 +69,7 @@ export default function AddStudentForm ({grades, user_id}: {grades: any, user_id
                 min="1"
                 max="7"
             />
-            <Input
-                errorMessage="Please enter a valid age"
-                label="Age"
-                labelPlacement="outside"
-                name="age"
-                placeholder="Enter the student's age"
-                type="number"
-            />
-            <Input
-                errorMessage="Please enter a valid address"
-                label="Address"
-                labelPlacement="outside"
-                name="address"
-                placeholder="Enter the student's address"
-                type="text"
-            />
-            <Input
-                errorMessage="Please enter a valid phone number"
-                label="Phone Number"
-                labelPlacement="outside"
-                name="phone_number"
-                placeholder="Enter the student's contact phone number"
-                type="number"
-            />
+
             <div className="flex gap-2">
                 <Button color="primary" type="submit">
                     Submit
@@ -89,5 +79,5 @@ export default function AddStudentForm ({grades, user_id}: {grades: any, user_id
                 </Button>
             </div>
         </Form>
-    )
+    );
 }

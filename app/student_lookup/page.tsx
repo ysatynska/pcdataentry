@@ -8,7 +8,6 @@ import { authUser, User } from '@/auth';
 
 export default async function Home() {
   const user = await authUser() as User;
-  const students = await fetchStudents(user.id);
   const studentsWithAverages = await fetchStudentsWithAverages(user.id);
   
   return (

@@ -52,7 +52,6 @@ export default async function Home() {
   );
   
   const filteredPieData = gradesPieData.filter(item => item !== null);
-  console.log(filteredPieData);
 
   return (
     <ChartsToggle sections={sections} filteredBarData={filteredBarData} avgPerStudent={avgPerStudent} filteredPieData={filteredPieData}/>

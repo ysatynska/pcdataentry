@@ -104,7 +104,7 @@ export async function fetchSectionsByEvaluationId (evaluation_id: string, user_i
   }
 }
 
-export async function fetchEvaluations(student_id: any, user_id: string) {
+export async function fetchEvaluations(student_id: string, user_id: string) {
   try {
     const evaluations = await sql`
       SELECT id, created_at
