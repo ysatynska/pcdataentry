@@ -1,13 +1,17 @@
 export type User = {
   id: string;
-  name: string;
   email: string;
-  password: string;
-};
+  name: string;
+}
 
 export type Grade = {
   id: string,
   name: string,
+}
+
+export type Evaluation = {
+  id: string,
+  created_at: string,
 }
 
 export type StudentAverage = {
@@ -42,11 +46,16 @@ export const columnsUser = [
 export type Student = {
   id: string;
   name: string;
-  age: number;
   grade: number;
-  address: string;
   sex: string;
-  phone_number: string;
+};
+
+export type StudentWithAverage = {
+  id: string;
+  name: string;
+  grade: number;
+  sex: string;
+  avg_percent_score: number;
 };
 
 export const columnsStudent = [
@@ -71,9 +80,23 @@ export const columnsStudent = [
 export type Section = {
   id: string;
   name: string;
+  total_score: number;
+  description: string,
+};
+
+export type SectionByEvalId = {
+  id: string;
+  name: string;
   description: string;
   total_score: number;
+  score: number;
 };
+
+export type EvaluationWithSections = {
+  id: string;
+  created_at: string;
+  sections: Section[]; // Ideally, replace `any[]` with a more specific type if possible
+}
 
 export const columnsSection = [
   {

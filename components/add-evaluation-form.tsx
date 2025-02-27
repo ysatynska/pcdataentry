@@ -3,18 +3,7 @@ import { Card, CardBody, CardFooter } from "@heroui/react";
 import { Form, Input, Button } from "@heroui/react";
 import { redirect } from "next/navigation";
 import { addEvaluationAction } from "@/app/lib/actions";
-
-interface Section {
-  id: string;
-  name: string;
-  description: string;
-  total_score: number;
-}
-
-interface Student {
-  id: string;
-  name: string;
-}
+import { Student, Section } from "@/app/lib/definitions";
 
 interface EvaluationFormData {
   user_id: string;

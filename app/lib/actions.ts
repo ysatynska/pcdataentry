@@ -4,17 +4,11 @@ import { neon } from '@neondatabase/serverless';
 if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not defined in environment variables.');
 const sql = neon(process.env.DATABASE_URL);
 import { revalidatePath } from 'next/cache';
+import { Student } from "@/app/lib/definitions";
 
-interface StudentFormData {
-  name: string;
-  grade: number;
-  sex: string;
-  user_id: string;
-}
-
-export async function addStudentAction(formData: StudentFormData) {
+export async function addStudentAction(formData: Student) {
   try {
-    const userId = parseInt(formData.user_id);
+    const userId = parseInt(formData.id);
     if (isNaN(userId)) throw new Error("Invalid user_id format");
     
     await sql`

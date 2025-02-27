@@ -1,6 +1,7 @@
 import AverageScoresBarChart from "@/components/average-scores-barchart";
 import { fetchAveragesBySectionID, fetchAveragesPerSectionForGrade, fetchGrades } from "@/app/lib/queries";
-import { authUser, User } from '@/auth';
+import { authUser } from '@/auth';
+import { User } from "@/app/lib/definitions";
 
 export default async function BarChartView () {
   const user = await authUser() as User;

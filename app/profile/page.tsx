@@ -1,5 +1,6 @@
-import { authUser, User } from '@/auth';
+import { authUser } from '@/auth';
 import { EmailResetForm, NameResetForm } from '@/components/reset_forms';
+import { User } from "@/app/lib/definitions";
 
 export default async function Profile() {
   const user = await authUser() as User;

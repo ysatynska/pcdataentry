@@ -3,21 +3,15 @@ import React from 'react';
 import { addStudentAction } from "@/app/lib/actions";
 import { Form, Input, Button } from "@heroui/react";
 import { redirect } from 'next/navigation';
+import { Grade, Student } from "@/app/lib/definitions";
 
-interface StudentFormData {
-    user_id: string;
-    name: string;
-    sex: string;
-    grade: number;
-}
-
-export default function AddStudentForm({ grades, user_id }: { grades: any; user_id: string }) {
+export default function AddStudentForm({ grades, user_id }: { grades: Grade[]; user_id: string }) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(e.currentTarget));
 
-        const studentData: StudentFormData = {
-            user_id: user_id,
+        const studentData: Student = {
+            id: user_id,
             name: formData.name as string,
             sex: formData.sex as string,
             grade: parseInt(formData.grade as string, 10),

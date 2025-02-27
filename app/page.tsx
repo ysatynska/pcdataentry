@@ -1,6 +1,6 @@
 import React from "react";
 import { fetchAveragesBySectionID, fetchAveragesPerSectionForGrade, fetchGrades, fetchAverageScoresPerStudent } from "./lib/queries";
-import { authUser, User } from '@/auth';
+import { authUser } from '@/auth';
 import ChartsToggle from "@/components/partials/ChartsToggle";
 
 interface GradeData {
