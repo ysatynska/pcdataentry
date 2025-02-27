@@ -31,11 +31,9 @@ export default function AddEvaluationForm({
 
     sections.forEach(section => {
       const scoreKey = `score_${section.id}`;
-      evaluationData[scoreKey] = parseInt(formData[scoreKey], 10) || 0;
+      evaluationData[section.id] = parseInt(formData[scoreKey], 10) || 0;
     });
-    console.log(evaluationData);
     const result = await addEvaluationAction(evaluationData);
-    console.log(result);
     if (result.success) {
       redirect(`/${student.id}/overview`);
     }
