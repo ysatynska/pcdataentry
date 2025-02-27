@@ -46,13 +46,13 @@ export async function fetchStudentsWithAverages(user_id: string) {
             s.sex as sex,
             sec.id as section_id, 
             sec.total_score as total_score,
-            (SUM(esm.score) * 100.0) / SUM(sec.total_score) AS section_percent_score, 
+            COALESCE((SUM(esm.score) * 100.0) / NULLIF(SUM(sec.total_score), 0), NULL) AS section_percent_score, 
             AVG(esm.score) AS esm_score,
             s.created_by AS created_by
           FROM students s
-          JOIN evaluations e on e.student_id = s.id
-          JOIN evaluation_section_map esm on esm.evaluation_id = e.id
-          JOIN sections sec on esm.section_id = sec.id
+          LEFT JOIN evaluations e ON e.student_id = s.id
+          LEFT JOIN evaluation_section_map esm ON esm.evaluation_id = e.id
+          LEFT JOIN sections sec ON esm.section_id = sec.id
           WHERE s.created_by = ${user_id}
           GROUP BY s.id, s.name, s.grade, s.created_by, sec.id, sec.total_score, s.sex
       )
@@ -71,6 +71,7 @@ export async function fetchStudentsWithAverages(user_id: string) {
     throw new Error('Failed to fetch students.');
   }
 }
+
 
 export async function fetchStudent(student_id: string, user_id: string) {
   try {

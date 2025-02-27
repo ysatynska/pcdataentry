@@ -55,7 +55,7 @@ export type StudentWithAverage = {
   name: string;
   grade: number;
   sex: string;
-  avg_percent_score: number;
+  avg_percent_score?: number;
 };
 
 export const columnsStudent = [
