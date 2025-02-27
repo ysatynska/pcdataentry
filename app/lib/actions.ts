@@ -29,7 +29,7 @@ interface EvaluationFormData {
   [key: string]: any;
 }
 
-export async function addEvaluationAction(formData: any) {
+export async function addEvaluationAction(formData: EvaluationFormData) {
   try {
     const userId = Number(formData.user_id);
     if (isNaN(userId)) throw new Error("Invalid user_id format");
