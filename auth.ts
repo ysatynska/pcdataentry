@@ -2,6 +2,7 @@ import PostgresAdapter from '@auth/pg-adapter';
 import { Pool } from '@neondatabase/serverless';
 import NextAuth from 'next-auth';
 import Resend from 'next-auth/providers/resend';
+import { User } from "@/app/lib/definitions";
 
 import { neon } from '@neondatabase/serverless';
 if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not defined in environment variables.');
@@ -29,12 +30,6 @@ export async function sessionUser () {
     return user[0] as User;
   }
   return null;
-}
-
-export interface User {
-  id: string;
-  email: string;
-  name: string;
 }
 
 export async function authUser (): Promise<User> {

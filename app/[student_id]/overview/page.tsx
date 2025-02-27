@@ -1,21 +1,26 @@
 import { fetchStudent, fetchSectionsByEvaluationId, fetchEvaluations } from "@/app/lib/queries";
 import AddNewLink from "@/components/add-new-eval-link";
 import EvaluationCard from "@/components/evaluation-card";
-import { authUser, User } from '@/auth';
+import { authUser } from '@/auth';
+import { Student, Evaluation, SectionByEvalId, EvaluationWithSections, User } from "@/app/lib/definitions";
 
-export default async function StudentOverview({ params }: any) {
+type StudentOverviewProps = Promise<{ student_id: string; }>
+
+export default async function StudentOverview({ params }: { params: StudentOverviewProps }) {
   const user = await authUser() as User;
   const { student_id } = await params;
 
-  const student = await fetchStudent(student_id, user.id);
-  const evaluations = await fetchEvaluations(student_id, user.id);
-  const evaluationsWithSections = await Promise.all(evaluations.map(async (evaluation) => {
-    const sections = await fetchSectionsByEvaluationId(evaluation.id, user.id);
-    return {
-      ...evaluation,
-      sections: sections,
-    };
-  }));
+  const student: Student = await fetchStudent(student_id, user.id);
+  const evaluations: Evaluation[] = await fetchEvaluations(student_id, user.id);
+  const evaluationsWithSections: EvaluationWithSections[] = await Promise.all(
+    evaluations.map(async (evaluation) => {
+      const sections: SectionByEvalId[] = await fetchSectionsByEvaluationId(evaluation.id, user.id);
+      return {
+        ...evaluation,
+        sections,
+      } as EvaluationWithSections;
+    })
+  );
 
   return (
     <div className="text-center">

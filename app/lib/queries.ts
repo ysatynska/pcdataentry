@@ -1,4 +1,4 @@
-import { User, Section, Student, StudentSectionCourseMap, Course } from "@/app/lib/definitions";
+import { Evaluation, SectionByEvalId, Section, Student, StudentWithAverage, Course, Grade, StudentAverage, SectionAverage } from "@/app/lib/definitions";
 import { neon } from '@neondatabase/serverless';
 
 if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not defined in environment variables.');
@@ -12,7 +12,7 @@ export async function fetchAllSections() {
         WHERE deleted_at IS NULL
         ORDER BY id;
       `;
-      return sections;
+      return sections as Section[];
     } catch (error) {
       console.error('Error fetching sections:', error);
       throw new Error('Failed to fetch sections.');
@@ -65,7 +65,7 @@ export async function fetchStudentsWithAverages(user_id: string) {
       FROM section_scores
       GROUP BY id, name, grade, sex
     `;
-    return students;
+    return students as StudentWithAverage[];
   } catch (error: any) {
     console.error('Error fetching students:', error);
     throw new Error('Failed to fetch students.');
@@ -75,13 +75,13 @@ export async function fetchStudentsWithAverages(user_id: string) {
 export async function fetchStudent(student_id: string, user_id: string) {
   try {
     const student = await sql`
-      SELECT id, name, age, grade, sex, address, phone_number
+      SELECT id, name, grade, sex
       FROM students
       WHERE deleted_at IS NULL
       AND created_by = ${user_id}
       AND id = ${student_id};
     `;
-    return student[0];
+    return student[0] as Student;
   } catch (error: any) {
     console.error('Error fetching student with id ', student_id, ": ", error);
     throw new Error('Failed to fetch student.');
@@ -90,21 +90,21 @@ export async function fetchStudent(student_id: string, user_id: string) {
 
 export async function fetchSectionsByEvaluationId (evaluation_id: string, user_id: string) {
   try {
-    const evaluations = await sql`
+    const sections = await sql`
       SELECT s.id, s.name, s.description, s.total_score, esm.score
       FROM sections s
       JOIN evaluation_section_map esm ON esm.section_id = s.id
       WHERE esm.evaluation_id = ${evaluation_id}
       AND esm.created_by = ${user_id}
     `;
-    return evaluations;
+    return sections as SectionByEvalId[];
   } catch (error: any) {
     console.error('Error fetching evaluations sections with id ', evaluation_id, ': ', error);
     throw new Error('Failed to fetch evaluations sections.');
   }
 }
 
-export async function fetchEvaluations(student_id: any, user_id: string) {
+export async function fetchEvaluations(student_id: string, user_id: string) {
   try {
     const evaluations = await sql`
       SELECT id, created_at
@@ -112,7 +112,7 @@ export async function fetchEvaluations(student_id: any, user_id: string) {
       WHERE student_id = ${student_id}
       AND created_by = ${user_id}
     `;
-    return evaluations;
+    return evaluations as Evaluation[];
   } catch (error: any) {
     console.error('Error fetching evaluations with student_id ', student_id, '.');
     throw new Error('Failed to fetch evaluations.');
@@ -196,7 +196,7 @@ export async function fetchAveragesPerSectionForGrade(grade: string, user_id: st
       ORDER BY 
         e.section_id;
     `;
-    return avgs;
+    return avgs as SectionAverage[];
   }
   catch(error: any){
     console.error('Error fetching averages: ', error);
@@ -226,7 +226,7 @@ export async function fetchGrades() {
       FROM grades
       ORDER BY id
     `;
-    return grades;
+    return grades as Grade[];
   }
   catch(error: any){
     console.error('Error fetching grades: ', error);
@@ -264,7 +264,7 @@ export async function fetchAverageScoresPerStudent (user_id: string) {
       FROM section_scores
       GROUP BY student_id, name, created_by, grade
     `
-    return scores;
+    return scores as StudentAverage[];
   } catch (error: any) {
     console.error('Error fetching avg. scores: ', error);
     throw new Error('Failed to fetch avg. scores.');
