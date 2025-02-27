@@ -65,6 +65,7 @@ export async function fetchStudentsWithAverages(user_id: string) {
       FROM section_scores
       GROUP BY id, name, grade, sex
     `;
+    console.log(students);
     return students as StudentWithAverage[];
   } catch (error: any) {
     console.error('Error fetching students:', error);

@@ -33,8 +33,9 @@ export default function AddEvaluationForm({
       const scoreKey = `score_${section.id}`;
       evaluationData[scoreKey] = parseInt(formData[scoreKey], 10) || 0;
     });
-
+    console.log(evaluationData);
     const result = await addEvaluationAction(evaluationData);
+    console.log(result);
     if (result.success) {
       redirect(`/${student.id}/overview`);
     }

@@ -26,10 +26,11 @@ export async function addStudentAction(formData: Student) {
 interface EvaluationFormData {
   student_id: string;
   user_id: string;
-  [key: string]: string | number;
+  [key: string]: any;
 }
 
-export async function addEvaluationAction(formData: EvaluationFormData) {
+export async function addEvaluationAction(formData: any) {
+  console.log("inserted eval");
   try {
     const userId = Number(formData.user_id);
     if (isNaN(userId)) throw new Error("Invalid user_id format");
@@ -42,7 +43,9 @@ export async function addEvaluationAction(formData: EvaluationFormData) {
 
     const evaluationId = evaluation.evaluation_id;
     const entries = Object.entries(formData).filter(([key]) => key !== 'student_id' && key !== 'user_id');
+    console.log(entries);
     for (const [sectionId, score] of entries) {
+      console.log(sectionId, score);
       await sql`
         INSERT INTO evaluation_section_map (evaluation_id, section_id, score, created_by, updated_by)
         VALUES (${evaluationId}, ${sectionId}, ${score}, ${userId}, ${userId})
