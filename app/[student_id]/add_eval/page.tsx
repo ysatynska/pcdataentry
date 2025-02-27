@@ -11,7 +11,7 @@ interface AddStudentEvalProps {
 
 export default async function AddStudentEval({ params }: AddStudentEvalProps) {
   const user = (await authUser()) as User;
-  const { student_id } = await params;
+  const { student_id } = params;
   const student: Student | null = await fetchStudent(student_id, user.id);
   const sections: Section[] = await fetchAllSections();
 
